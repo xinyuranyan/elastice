@@ -1,0 +1,7 @@
+spring:
+
+  elasticsearch:
+    rest:
+      username: elastic
+      password: rEL48OwXfFn95Fq6OP2C
+      uris: ["test-etl.51mydao.com:9200"]
