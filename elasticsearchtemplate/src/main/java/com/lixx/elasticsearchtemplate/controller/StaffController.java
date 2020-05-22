@@ -13,17 +13,11 @@ public class StaffController {
 
     private final StaffService service;
 
-    /**
-     * es索引名称-使用别名
-     */
-    private final  static String INDEX="Staff";
-
     public StaffController(StaffService service) {
         this.service = service;
     }
 
-    public void queryByPage()
-    {
+    public void queryByPage() {
 
     }
 }

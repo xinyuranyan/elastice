@@ -1,0 +1,184 @@
+#创建查询模板
+POST _scripts/replacement_selection_search
+{
+  "script": {
+    "lang": "velocity",
+    "source": """
+   {
+      "from" : $offset, "size" : $pageSize,
+      "sort": {
+    		"create_time": {"order": "desc"}
+	    },
+      "query": {
+        "bool": {
+          "filter": [
+          {"term": {"deleted": {"value": 0}}}
+            #if($id)
+            ,{
+              "term": {
+                "id": "$id"
+              }
+            }
+            #end
+            #if($productId)
+            ,{
+              "term": {
+                "product_id": $productId
+              }
+            }
+            #end
+            #if($productModel)
+            ,{
+              "match": {
+                "product_model.keyword": "$productModel"
+              }
+            }
+            #end
+            #if($enterpriseId)
+            ,{
+              "term": {
+                "enterprise_id": $enterpriseId
+              }
+            }
+            #end
+            #if($enterpriseName)
+            ,{
+              "term": {
+                "enterprise_name": "$enterpriseName"
+              }
+            }
+            #end
+            #if($trueName)
+            ,{
+              "term": {
+                "true_name": "$trueName"
+              }
+            }
+            #end
+            #if($mobilePhone)
+            ,{
+              "term": {
+                "mobile_phone": "$mobilePhone"
+              }
+            }
+            #end
+            #if($status)
+            ,{
+              "term": {
+                "status": $status
+              }
+            }
+            #end
+            #if($operator==1)
+            ,{
+              "range": {
+                "recommend_count": {
+                  "gte": $recommendCount
+                }
+              }
+            }
+            #end
+            #if($operator==2)
+            ,{
+              "range": {
+                "recommend_count": {
+                  "lte": $recommendCount
+                }
+              }
+            }
+            #end
+            #if($createTimeStampStart)
+            ,{
+              "range": {
+                "create_time": {
+                  "gte": $createTimeStampStart
+                }
+              }
+            }
+            #end
+            #if($createTimeStampEnd)
+            ,{
+              "range": {
+                "create_time": {
+                  "lte": $createTimeStampEnd
+                }
+              }
+            }
+            #end
+            #if($isHistory!=$null)
+              #if($isHistory)
+              ,{
+                "range": {
+                  "create_time": {
+                    "lte": $timestamp
+                  }
+                }
+              }
+              #end
+              #if(!$isHistory)
+              ,{
+                "range": {
+                  "create_time": {
+                    "gte": $timestamp
+                  }
+                }
+              }
+              #end
+            #end
+            #if($supplierId)
+            ,{"nested": {
+              "path": "relation_suppliers",
+              "query": {
+                "bool": {
+                  "filter": [
+                     {"term": {"relation_suppliers.deleted": {"value": 0}}},
+                     {"term": {"relation_suppliers.type": {"value": 2}}}
+                       #if($supplierId)
+                          ,{"term": {
+                              "relation_suppliers.enterprise_id": $supplierId
+                            }
+                          }
+                       #end
+                       #if($enterpriseSelectionStatus)
+                        ,{"term": {
+                            "relation_suppliers.status": $enterpriseSelectionStatus
+                          }
+                        }
+                      #end
+                  ]
+                }
+              }
+              }
+            }
+            #end
+          ]
+        }
+      }
+    }
+ """
+  }
+}
+
+###
+
+#渲染查询模板
+GET _render/template/replacement_selection_search
+{
+  "params": {
+    "productModel":null,
+    "enterpriseSelectionStatus":null,
+    "offset": 0,
+    "pageSize": 10,
+    "enterpriseId": null,
+    "productId": 0,
+    "operator":0,
+    "trueName":"",
+    "mobilePhone":"",
+    "recommendCount":0,
+    "isHistory":null,
+    "id": "",
+    "enterpriseName":"",
+    "timestamp":1582161545628,
+    "status":0
+  }
+}

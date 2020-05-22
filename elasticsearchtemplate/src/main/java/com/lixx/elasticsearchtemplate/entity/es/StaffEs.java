@@ -1,5 +1,7 @@
-package com.lixx.elasticsearchtemplate.entity.esmodel;
+package com.lixx.elasticsearchtemplate.entity.es;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,6 +13,7 @@ import java.util.List;
  * @description
  */
 @Data
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class StaffEs {
     //region 员工信息
     /**
@@ -47,7 +50,7 @@ public class StaffEs {
      * 修改时间-时间戳
      */
     private long modifyTime;
-//endregion
+    //endregion
 
     /**
      * 所属部门信息
@@ -60,6 +63,7 @@ public class StaffEs {
     private List<StaffEquipment> staffEquipments;
 
     @Data
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class StaffDepartment {
         /**
          * 部门Id
@@ -78,6 +82,7 @@ public class StaffEs {
     }
 
     @Data
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     public static class StaffEquipment {
         /**
          * 主键
